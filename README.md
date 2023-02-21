@@ -1,3 +1,11 @@
+# Quick Start
+```bash
+npm i
+npm run dev
+```
+
+# Relevant Notes
+
 Create package.json
 
 npm init -y
@@ -301,11 +309,34 @@ Antes de continuarmos, conforme criamos usuarios, uma lternativas ẽ nao colcoa
 
 
 
+3 FORMAS DE ENVIAR INFOS PARA API
+* Query /users?userId=1&name=Rogerio
+Usamos query param quando precisamos manter uma URL stateful
+Quando vamos fazer um filtro, busca, paginaçao, nao obrigatorios para a requisiçao e vamos enviar para alguem. Enviar infos que nao sao sensiveis que serverm para modificar resposta do backend.
 
 
+Route -> Parametros nao nomeados que fiacam nas rotas.
+/users/1
+O 1 é chamado de route params. Geralemnte se usa para identificaçao de recursos. POr exemplo, buscar usuarios com ID 1.
+GET http://localhost:3333/users/1
+Nao eh necessario ter um nome pois o method http jádiz o que o 1 significa.
+Caso queiramos deletar o usuario com Id 1
+DELETE http://localhost:3333/users/1
+Tb naopode ser utilizado como informaçoes sensiveis!!!
 
 
+Req Body
+Utilizado para envio de infos de um formulario e quantas infos quisermos. Muitomais dificeis de serem decriptografados com https.
+O corpo da req eh enviado a parte junto com o body.
 
+Vamoscriar rotas de ediçcao e remocao dos usuario. 
+
+
+REGEX eh um fromato de expressao regular que fazemos para encontrar textos dentro de textos.
+
+O metodo matchAll() do js retorna quais buscas foram bem sucedidas a partir de um Regex. E reotna uma classe iterator do js.
+
+Para isso, o methodo Array.from converte a estrutura  tetornada domachAll para um array pois o JSON.stringify nao funciona muito bem.
 
 
 

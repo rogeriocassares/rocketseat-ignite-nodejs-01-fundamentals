@@ -1,35 +1,28 @@
 import http from "node:http";
-import { randomUUID } from "node:crypto";
-import { Database } from "./database.js";
 import { json } from "./middlewares/json.js";
-
-const database = new Database();
+import { routes } from "./routes.js";
+import { extractQueryParams } from "./utils/extract-query-params.js";
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
 
   await json(req, res); // POis json() é uma funcao assincrona e preceisamos aguardar que essa funcao execute antesde prosseguir.
 
-  if (method === "GET" && url === "/users") {
-    const users = database.select("users");
+  const route = routes.find((route) => {
+    return route.method === method && route.path.test(url);
+  });
 
-    return res
-      .setHeader("Content-type", "application/json")
-      .end(JSON.stringify(users));
-  }
+  if (route) {
+    const routeParams = req.url.match(route.path);
 
-  if (method === "POST" && url === "/users") {
-    const { name, email } = req.body;
+    // console.log(extractQueryParams(routeParams.groups.query))
 
-    const users = {
-      id: randomUUID(),
-      name,
-      email,
-    };
+    const { query, ...params } = routeParams.groups;
 
-    database.insert("users", users);
+    req.params = params;
+    req.query = query ? extractQueryParams(query) : {}; // TO not return undefined if the query was not set
 
-    return res.writeHead(201).end();
+    return route.handler(req, res);
   }
 
   return res.writeHead(404).end();
